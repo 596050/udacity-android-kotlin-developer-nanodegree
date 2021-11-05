@@ -1,52 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    tools:context=".LoginFragment"
     android:orientation="vertical"
-    >
-      <TextView
-            android:id="@+id/email_field_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email_field_label"
-            android:textAlignment="center" />
+    tools:context=".LoginFragment">
 
-        <EditText
-            android:id="@+id/email_field_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+    <TextView
+        android:id="@+id/email_field_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/email_field_label"
+        android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/password_field_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/password_field_label"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/email_field_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
 
-        <EditText
-            android:id="@+id/password_field_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
+    <TextView
+        android:id="@+id/password_field_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/password_field_label"
+        android:textAlignment="center" />
 
-            <Button
-                android:id="@+id/login_button"
-                style="button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/login_button_label" />
+    <EditText
+        android:id="@+id/password_field_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword" />
 
-            <Button
-                android:id="@+id/sign_up_button"
-                style="button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_up_button_label" />
+    <Button
+        android:id="@+id/login_button"
+        style="button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_button_label" />
+
+    <Button
+        android:id="@+id/sign_up_button"
+        style="button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_button_label" />
 </LinearLayout>
