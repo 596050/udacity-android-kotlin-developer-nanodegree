@@ -6,9 +6,24 @@
     tools:context=".WelcomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+  <TextView
+            android:id="@+id/welcome_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_title"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/welcome_body_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_body_content"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/navigate_to_instructions_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/navigate_to_instructions_button_label" />
 
 </FrameLayout>
