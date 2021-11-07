@@ -19,7 +19,7 @@ tools:context=".InstructionFragment"
 
         <TextView
             android:id="@+id/instructions_body_content"
-            android:text="@{@string/instructions_body_content(@string/add_shoe_button)}"
+            android:text="@string/instructions_body_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
