@@ -10,7 +10,14 @@
     <string name="sign_up_button_label">Sign up</string>
     <!-- navigation -->
     <string name="navigate_to_instructions_button_label">Go to instructions</string>
+    <string name="navigate_to_shoe_list_button_label">Go to shoe list</string>
     <!-- welcome screen -->
     <string name="welcome_title">Welcome</string>
     <string name="welcome_body_content">The Android framework manages the lifecycles of UI controllers, such as activities and fragments. The framework may decide to destroy or re-create a UI controller in response to certain user actions or device events that are completely out of your control.</string>
+    <!-- instruction screen -->
+    <string name="instruction_title">Instructions</string>
+    <string name="instructions_body_content">View the shoe list by clicking on %s</string>
+
+    <!-- shoe list screen -->
+    <string name="add_shoe_button">Add shoe</string>
 </resources>
