@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import timber.log.Timber
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.udacity.shoestore.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     private val shoeListViewModel: ShoeListViewModel by viewModels()
@@ -16,8 +19,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+//        setSupportActionBar(binding.toolbar)
+//        val navigationController = this.findNavController(R.id.navigation)
+//        NavigationUI.setupWithNavController(binding.toolbar, navigationController, AppBarConfiguration(navigationController.graph))
+        setContentView(binding.root)
     }
 
 }
