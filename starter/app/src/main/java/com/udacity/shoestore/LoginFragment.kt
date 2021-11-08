@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.udacity.shoestore.databinding.FragmentLoginBinding
 
@@ -22,18 +23,23 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-
-        binding.loginButton.setOnClickListener{
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeFragment())
-        }
-        binding.signUpButton.setOnClickListener{
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeFragment())
-        }
+        init(binding)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun init(binding : FragmentLoginBinding) {
+        this.setOnClickNavigateToWelcome(binding.loginButton)
+        this.setOnClickNavigateToWelcome(binding.signUpButton)
+    }
+
+    private fun setOnClickNavigateToWelcome(button : Button) {
+        button.setOnClickListener{
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToWelcomeFragment())
+        }
     }
 }
