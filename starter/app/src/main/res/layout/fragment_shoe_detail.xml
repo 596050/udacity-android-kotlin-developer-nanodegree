@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.udacity.shoestore.ShoeDetailFragment">
+
+    <data>
+
+        <variable
+            name="Shoe"
+            type="com.udacity.shoestore.models.Shoe" />
+
+        <variable
+            name="ShoeListViewModel"
+            type="com.udacity.shoestore.models.ShoeListViewModel" />
+    </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -81,4 +97,4 @@
 </LinearLayout>
 
 
-
+</layout>

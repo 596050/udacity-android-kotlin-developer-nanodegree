@@ -22,6 +22,7 @@ class InstructionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentInstructionBinding.inflate(inflater, container, false)
+
         binding.navigateToShoeListButton.setOnClickListener{
             findNavController().navigate(InstructionFragmentDirections.actionInstructionFragmentToShoeListFragment())
         }
