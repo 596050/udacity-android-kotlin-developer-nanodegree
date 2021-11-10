@@ -19,10 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Timber.plant(Timber.DebugTree())
         binding = ActivityMainBinding.inflate(layoutInflater)
-//        setSupportActionBar(binding.toolbar)
-//        val navigationController = this.findNavController(R.id.navigation)
-//        NavigationUI.setupWithNavController(binding.toolbar, navigationController, AppBarConfiguration(navigationController.graph))
         setContentView(binding.root)
+        val navigationController = this.findNavController(R.id.navigation)
+        NavigationUI.setupWithNavController(binding.toolbar, navigationController, AppBarConfiguration(navigationController.graph))
     }
-
 }
