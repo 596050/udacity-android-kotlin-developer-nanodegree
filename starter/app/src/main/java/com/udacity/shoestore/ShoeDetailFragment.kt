@@ -8,9 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.udacity.shoestore.databinding.FragmentLoginBinding
 import com.udacity.shoestore.databinding.FragmentShoeDetailBinding
-
+import com.udacity.shoestore.models.Shoe
+import  com.udacity.shoestore.models.ShoeListViewModel
 /**
  * A simple [Fragment] subclass.
  * Use the [ShoeDetailFragment.newInstance] factory method to
@@ -24,18 +24,33 @@ class ShoeDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentShoeDetailBinding.inflate(inflater, container, false)
-//        _binding = DataBindingUtil.inflate(
-//            inflater, R.layout.fragment_shoe_detail, container, false
-//        )
+        _binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_shoe_detail, container, false
+        )
         binding.cancelShoeDetailButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(
                 R.id.action_shoeDetailFragment_to_shoeListFragment
             )
         )
-        binding.shoeListViewModel = shoeListViewModel
+        binding.viewModel = shoeListViewModel
+
+        binding.saveShoeDetailButton.setOnClickListener{
+            onSaveButtonClick()
+        }
+
         return binding.root
+
     }
+
+    fun onSaveButtonClick() {
+        shoeListViewModel.createShoe(
+            name = binding.shoeNameInput.text.toString(),
+            size = binding.shoeSizeInput.text.toString(),
+            company = binding.companyNameInput.text.toString(),
+            description = binding.descriptionInput.text.toString()
+        )
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

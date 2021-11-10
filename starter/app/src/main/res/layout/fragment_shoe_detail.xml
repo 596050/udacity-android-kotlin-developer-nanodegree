@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ShoeDetailFragment">
-
     <data>
 
         <variable
-            name="Shoe"
+            name="shoe"
             type="com.udacity.shoestore.models.Shoe" />
 
         <variable
-            name="ShoeListViewModel"
-            type="com.udacity.shoestore.ShoeListViewModel" />
+            name="viewModel"
+            type="com.udacity.shoestore.models.ShoeListViewModel" />
     </data>
 
     <LinearLayout
@@ -23,8 +20,6 @@
         android:orientation="vertical"
         android:gravity="center_vertical"
         >
-
-
         <TextView
             android:id="@+id/shoe_name_label"
             android:layout_width="match_parent"
@@ -80,18 +75,16 @@
             android:inputType="textPersonName"></EditText>
 
         <Button
-            android:id="@+id/save_shoe_detail_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{(view) -> ShoeListViewModel.createShoe(view, Shoe)}"
-            android:text="@string/save_shoe_detail_button_label" />
-
-        <Button
             android:id="@+id/cancel_shoe_detail_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cancel_shoe_detail_button_label" />
+
+        <Button
+            android:id="@+id/save_shoe_detail_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_shoe_detail_button_label"
+            />
     </LinearLayout>
-
-
 </layout>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.udacity.shoestore.databinding.FragmentLoginBinding
 
@@ -22,7 +23,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         init(binding)
         return binding.root
     }

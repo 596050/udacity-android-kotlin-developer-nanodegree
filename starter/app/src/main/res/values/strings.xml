@@ -23,9 +23,9 @@
 
     <!-- shoe detail screen -->
     <string name="shoe_name_label">Shoe name</string>
-    <string name="company_name_label">Brand</string>
+    <string name="company_name_label">Company name</string>
     <string name="shoe_size_label">Shoe size</string>
-    <string name="description_label">Shoe name</string>
+    <string name="description_label">Shoe description</string>
     <string name="save_shoe_detail_button_label">Save shoe</string>
     <string name="cancel_shoe_detail_button_label">Cancel</string>
 </resources>
