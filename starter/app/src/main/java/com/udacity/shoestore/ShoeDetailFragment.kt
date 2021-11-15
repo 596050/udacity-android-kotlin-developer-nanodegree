@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.udacity.shoestore.databinding.FragmentShoeDetailBinding
 import com.udacity.shoestore.models.Shoe
 import  com.udacity.shoestore.models.ShoeListViewModel
@@ -49,6 +50,7 @@ class ShoeDetailFragment : Fragment() {
             company = binding.companyNameInput.text.toString(),
             description = binding.descriptionInput.text.toString()
         )
+       findNavController().navigateUp()
     }
 
     override fun onDestroyView() {

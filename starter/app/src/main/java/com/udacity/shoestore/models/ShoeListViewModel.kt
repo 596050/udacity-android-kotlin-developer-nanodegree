@@ -13,7 +13,6 @@ class ShoeListViewModel : ViewModel() {
 
     fun createShoe(name : String, size : String, company : String, description : String) {
         val shoe = Shoe(name, size.toDouble(), company, description, emptyList())
-        Log.d("createShoe", shoe.toString())
         val newList = shoeList.value?.toMutableList() ?: mutableListOf()
         newList.add(shoe)
         _shoeList.value = newList
