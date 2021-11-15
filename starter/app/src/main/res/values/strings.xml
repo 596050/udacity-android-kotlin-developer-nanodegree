@@ -28,4 +28,6 @@
     <string name="description_label">Shoe description</string>
     <string name="save_shoe_detail_button_label">Save shoe</string>
     <string name="cancel_shoe_detail_button_label">Cancel</string>
+    <!-- menu button -->
+    <string name="log_out">Log out</string>
 </resources>
