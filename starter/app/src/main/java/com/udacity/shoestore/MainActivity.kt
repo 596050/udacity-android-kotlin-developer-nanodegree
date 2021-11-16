@@ -6,6 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -28,20 +30,45 @@ class MainActivity : AppCompatActivity() {
             navController,
             appBarConfiguration
         )
-//        listener for screen changes
-//        conditionally render log out menu
-//        if () {}
-        binding.toolbar.inflateMenu(R.menu.menu_shoes_list)
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.log_out -> {
-                    Toast.makeText(this, "Log out", Toast.LENGTH_SHORT).show()
-                    true
+
+//                val ids = arrayOf(
+//                    R.id.loginFragment,
+//                    R.id.welcomeFragment
+//                )
+                val listener  = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+//                    if (ids.contains(destination.id)) {
+//                        Log.d("LOGGINGINGINGING", destination.id.toString())
+//                    }
+                    if (destination.id == R.id.shoeListFragment && binding.toolbar.menu.findItem(R.menu.menu_shoes_list) == null) {
+                        binding.toolbar.inflateMenu(R.menu.menu_shoes_list)
+                        binding.toolbar.setOnMenuItemClickListener {
+                            when (it.itemId) {
+                                R.id.log_out -> {
+                                    Toast.makeText(this, "Log out", Toast.LENGTH_SHORT).show()
+                                    val action = ShoeListFragmentDirections.actionShoeListFragmentToLoginFragment()
+                                    navController.navigate(action)
+                                    true
+                                }
+                                else -> throw UnknownError()
+                            }
+                        }
+                    }
                 }
-                else -> throw UnknownError()
-            }
-        }
+                navController.addOnDestinationChangedListener(listener)
+
+
 
     }
+//
+//    override fun onStart() {
+//        super.onStart()
+//        val listener  = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+//            Log.d("controller.toString", controller.toString())
+//            Log.d("destination change", destination.toString())
+//            Log.d("arguments.toString", arguments.toString())
+//
+//        }
+//        controller.addOnDestinationChangedListener(listener)
+//    }
 
 }
