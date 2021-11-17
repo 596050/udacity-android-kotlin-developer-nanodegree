@@ -6,13 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.udacity.shoestore.databinding.FragmentShoeListBinding
 import com.udacity.shoestore.models.ShoeListViewModel
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -40,7 +45,6 @@ class ShoeListFragment : Fragment() {
 
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         shoeListViewModel.shoeList.observe(viewLifecycleOwner) { shoes ->

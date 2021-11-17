@@ -1,10 +1,13 @@
 package com.udacity.shoestore
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -30,45 +33,29 @@ class MainActivity : AppCompatActivity() {
             navController,
             appBarConfiguration
         )
+        setupLogOutMenu(navController)
+    }
 
-//                val ids = arrayOf(
-//                    R.id.loginFragment,
-//                    R.id.welcomeFragment
-//                )
-                val listener  = NavController.OnDestinationChangedListener { controller, destination, arguments ->
-//                    if (ids.contains(destination.id)) {
-//                        Log.d("LOGGINGINGINGING", destination.id.toString())
-//                    }
-                    if (destination.id == R.id.shoeListFragment && binding.toolbar.menu.findItem(R.menu.menu_shoes_list) == null) {
-                        binding.toolbar.inflateMenu(R.menu.menu_shoes_list)
-                        binding.toolbar.setOnMenuItemClickListener {
-                            when (it.itemId) {
-                                R.id.log_out -> {
-                                    Toast.makeText(this, "Log out", Toast.LENGTH_SHORT).show()
-                                    val action = ShoeListFragmentDirections.actionShoeListFragmentToLoginFragment()
-                                    navController.navigate(action)
-                                    true
-                                }
-                                else -> throw UnknownError()
-                            }
+    fun setupLogOutMenu(navController: NavController) {
+        val listener  = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+            if (binding.toolbar.menu.hasVisibleItems()) {
+                binding.toolbar.menu.clear()
+            }
+            if (destination.id == R.id.shoeListFragment) {
+                binding.toolbar.inflateMenu(R.menu.menu_shoes_list)
+                binding.toolbar.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.log_out -> {
+                            Toast.makeText(this, "Log out", Toast.LENGTH_SHORT).show()
+                            val action = ShoeListFragmentDirections.actionShoeListFragmentToLoginFragment()
+                            navController.navigate(action)
+                            true
                         }
+                        else -> throw UnknownError()
                     }
                 }
-                navController.addOnDestinationChangedListener(listener)
-
-
-
+            }
+        }
+        navController.addOnDestinationChangedListener(listener)
     }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        val listener  = NavController.OnDestinationChangedListener { controller, destination, arguments ->
-//            Log.d("controller.toString", controller.toString())
-//            Log.d("destination change", destination.toString())
-//            Log.d("arguments.toString", arguments.toString())
-//
-//        }
-//        controller.addOnDestinationChangedListener(listener)
-//    }
-
 }
