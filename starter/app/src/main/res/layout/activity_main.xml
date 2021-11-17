@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 <!--
-For a simple layout with minimal nesting, LinearLayout is used to reduce complexity it  on performance, on drag and drop user interface of Android Studio, on XML lines, on kB size of the app.
+For a simple layout with minimal nesting,
+LinearLayout is used to reduce complexity,
+linear layout would be more performant
+because it doesn't need to make any extra measurements
 -->
     <LinearLayout
         android:layout_width="match_parent"

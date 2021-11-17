@@ -5,7 +5,7 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_instruction.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_instruction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.21944444444444444" />
         <entry key="app/src/main/res/layout/fragment_shoe_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_shoe_list.xml" value="0.1" />
