@@ -13,6 +13,11 @@
             type="com.udacity.shoestore.models.ShoeListViewModel" />
     </data>
 
+    <!--
+    Shoe detail screen is simple,  linear layout would be more performant
+    because it doesn't need to make any extra measurements and is simply stacked, unnested view
+    -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -8,11 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.udacity.shoestore.databinding.FragmentInstructionBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [InstructionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class InstructionFragment : Fragment() {
     private var _binding: FragmentInstructionBinding? = null
     private val binding get() = _binding!!
@@ -20,7 +15,7 @@ class InstructionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentInstructionBinding.inflate(inflater, container, false)
 
         binding.navigateToShoeListButton.setOnClickListener{

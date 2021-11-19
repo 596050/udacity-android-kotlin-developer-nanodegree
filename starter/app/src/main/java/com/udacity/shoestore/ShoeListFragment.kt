@@ -1,29 +1,19 @@
 package com.udacity.shoestore
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.udacity.shoestore.databinding.FragmentShoeListBinding
 import com.udacity.shoestore.models.ShoeListViewModel
-import kotlinx.android.synthetic.main.activity_main.view.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ShoeListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ShoeListFragment : Fragment() {
     private var _binding: FragmentShoeListBinding? = null
     private val binding get() = _binding!!
@@ -32,7 +22,7 @@ class ShoeListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_shoe_list, container, false
@@ -51,7 +41,8 @@ class ShoeListFragment : Fragment() {
             shoes.forEach { shoe ->
                 binding.linearLayout.addView(
                     TextView(requireContext()).apply {
-                        text = "${shoe.name}"
+                        text = shoe.name
+                        this.setTextColor(Color.parseColor("#000000"))
                     }
                 )
             }

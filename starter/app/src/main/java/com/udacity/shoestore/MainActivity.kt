@@ -1,25 +1,18 @@
 package com.udacity.shoestore
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.udacity.shoestore.databinding.ActivityMainBinding
-import com.udacity.shoestore.models.ShoeListViewModel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
-    private val shoeListViewModel: ShoeListViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +29,8 @@ class MainActivity : AppCompatActivity() {
         setupLogOutMenu(navController)
     }
 
-    fun setupLogOutMenu(navController: NavController) {
-        val listener  = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+    private fun setupLogOutMenu(navController: NavController) {
+        val listener  = NavController.OnDestinationChangedListener { _, destination, _ ->
             if (binding.toolbar.menu.hasVisibleItems()) {
                 binding.toolbar.menu.clear()
             }

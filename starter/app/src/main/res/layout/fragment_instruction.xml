@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+        Constraint layout is needed to allow
+        fields to be constrained to one another,
+        ConstraintLayout flattens the tree for
+        reduced memory usage
+    -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
