@@ -1,20 +1,26 @@
 package com.udacity.asteroidradar.main
 
 import androidx.lifecycle.ViewModel
+import com.udacity.asteroidradar.Asteroid
+import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
-//    val asteroids = mutableListOf<Asteroid>()
-//    init {
-//        for (i in 0 until 100) {
-//            asteroid = Asteroid()
-//            asteroid.id = i;
-//            asteroid.codename = "Asteroid #$i";
-//            asteroid.closeApproachDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//            asteroid.absoluteMagnitude = i % 2;
-//            asteroid.estimatedDiameter = Random.nextDouble();
-//            asteroid.relativeVelocity = Random.nextDouble();
-//            asteroid.distanceFromEarth = Random.nextDouble();
-//            asteroid.isPotentiallyHazardous = i % 2 == 0;
-//        }
-//    }
+    val asteroids = mutableListOf<Asteroid>()
+    init {
+        for (i in 0 until 100) {
+            val closeApproachDate = "2020-08-01"
+            val isPotentiallyHazardous = i % 2 == 0;
+            val asteroid = Asteroid(
+                id = i as Long,
+                codename = "Asteroid #$i",
+                closeApproachDate = closeApproachDate,
+                absoluteMagnitude = i % 2.0,
+                estimatedDiameter = Random.nextDouble(),
+                relativeVelocity = Random.nextDouble(),
+                distanceFromEarth = Random.nextDouble(),
+                isPotentiallyHazardous = isPotentiallyHazardous
+            );
+            asteroids += asteroid
+        }
+    }
 }
