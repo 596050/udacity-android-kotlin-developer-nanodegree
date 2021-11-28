@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,8 +12,6 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.databinding.ItemAsteroidBinding
 
-private const val TAG = "MainFragment"
-
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
@@ -24,26 +21,16 @@ class MainFragment : Fragment() {
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
+//    private val viewModel: MainViewModel by viewModels()
     private var adapter: AsteroidAdapter? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total asteroids: ${viewModel.asteroids.size}")
-    }
-
-    companion object {
-        fun newInstance(): MainFragment {
-            return MainFragment()
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        updateUI()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         setHasOptionsMenu(true)
+        updateUI()
         return binding.root
     }
 
@@ -62,6 +49,20 @@ class MainFragment : Fragment() {
         adapter = null
     }
 
+    
+    // override fun onCreate(savedInstanceState: Bundle?) {
+    //     super.onCreate(savedInstanceState)
+    //     Log.d(TAG, "Total asteroids: ${viewModel.asteroids.size}")
+    // }
+
+    // companion object {
+    //     fun newInstance(): MainFragment {
+    //         return MainFragment()
+    //     }
+    // }
+
+
+//    Stopped working after adding the below
     private fun updateUI() {
         val asteroids = viewModel.asteroids
         binding.asteroidRecycler.apply {
