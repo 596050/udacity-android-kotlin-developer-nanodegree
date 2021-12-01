@@ -1,7 +1,9 @@
 package com.udacity.asteroidradar.repository
 
 import android.content.Context
+import android.icu.text.AlphabeticIndex
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
@@ -39,18 +41,19 @@ class AsteroidRepository private constructor(context: Context) {
         }
     }
 
-    suspend fun getAsteroidsListLiveData(): LiveData<List<Asteroid>>? {
-        val response = retrofit.asteroidsRequest()
-        return if (response.isSuccessful) response.body()?.let {
+    suspend fun getAsteroidsListLiveData(): LiveData<List<Asteroid>> {
+        val response = nasaApi.asteroidsRequest()
+        val asteroidList = if (response.isSuccessful) response.body()?.let {
             database.asteroidDao().deleteAllAsteroids()
             it.nearEarthObjects.values.forEach { list ->
                 list.forEach { asteroid ->
                     database.asteroidDao().addAsteroid(asteroid)
                 }
-            }
+            } ?: emptyList<Asteroid>()
             database.asteroidDao().getAllAsteroids()
         }
         else database.asteroidDao().getAllAsteroids()
+        return MutableLiveData<List<Asteroid>>()
     }
 
     suspend fun getImageOfTheDayLiveData(): LiveData<TodayImageResponseModel>? {
