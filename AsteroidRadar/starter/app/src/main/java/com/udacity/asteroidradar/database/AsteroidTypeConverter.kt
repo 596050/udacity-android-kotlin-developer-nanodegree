@@ -2,6 +2,8 @@ package com.udacity.asteroidradar.database
 
 import androidx.room.TypeConverter
 
+
+// How to use https://github.com/Kotlin/kotlinx.serialization
 class AsteroidTypeConverter {
     @TypeConverter
     fun fromEstimatedDiameter(estimatedDiameter: EstimatedDiameter): String {

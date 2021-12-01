@@ -11,26 +11,31 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.databinding.ItemAsteroidBinding
+import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
-    private val binding get() = checkNotNull(_binding) {
-        "Binding is null"
-    }
+    private val binding
+        get() = checkNotNull(_binding) {
+            "Binding is null"
+        }
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
-//    private val viewModel: MainViewModel by viewModels()
+
+    //    private val viewModel: MainViewModel by viewModels()
     private var adapter: AsteroidAdapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         setHasOptionsMenu(true)
-        updateUI()
+        asteroid_recycler.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
 
@@ -49,26 +54,22 @@ class MainFragment : Fragment() {
         adapter = null
     }
 
-    
-    // override fun onCreate(savedInstanceState: Bundle?) {
-    //     super.onCreate(savedInstanceState)
-    //     Log.d(TAG, "Total asteroids: ${viewModel.asteroids.size}")
-    // }
-
     // companion object {
     //     fun newInstance(): MainFragment {
     //         return MainFragment()
     //     }
     // }
 
-
-//    Stopped working after adding the below
-    private fun updateUI() {
-        val asteroids = viewModel.asteroids
-        binding.asteroidRecycler.apply {
-            this.adapter = AsteroidAdapter(asteroids)
-            this.layoutManager = LinearLayoutManager(requireContext())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getAsteroidsListLiveData.observe(viewLifecycleOwner) { asteroids ->
+            updateUI(asteroids)
         }
+    }
+
+    private fun updateUI(asteroids: List<Asteroid>) {
+        adapter = AsteroidAdapter(asteroids)
+        asteroid_recycler.adapter = adapter
     }
 
 
@@ -85,10 +86,12 @@ class MainFragment : Fragment() {
             this.asteroid = asteroid
             binding.codename.text = asteroid.codename
             binding.date.text = asteroid.closeApproachDate
-            binding.icon.setImageResource(when(asteroid.isPotentiallyHazardous) {
-                true -> R.drawable.ic_status_potentially_hazardous
-                false -> R.drawable.ic_status_normal
-            })
+            binding.icon.setImageResource(
+                when (asteroid.isPotentiallyHazardous) {
+                    true -> R.drawable.ic_status_potentially_hazardous
+                    false -> R.drawable.ic_status_normal
+                }
+            )
         }
 
         override fun onClick(p0: View?) {
@@ -96,7 +99,8 @@ class MainFragment : Fragment() {
         }
     }
 
-    private inner class AsteroidAdapter(var asteroids: List<Asteroid>): RecyclerView.Adapter<AsteroidViewHolder>()  {
+    private inner class AsteroidAdapter(var asteroids: List<Asteroid>) :
+        RecyclerView.Adapter<AsteroidViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val binding = ItemAsteroidBinding.inflate(inflater, parent, false)

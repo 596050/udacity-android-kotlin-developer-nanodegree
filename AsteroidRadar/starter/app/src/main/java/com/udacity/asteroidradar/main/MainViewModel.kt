@@ -7,5 +7,6 @@ import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
     private val asteroidRepository = AsteroidRepository.get()
-    suspend fun
+    suspend fun getAsteroidsListLiveData() = asteroidRepository.getAsteroidsListLiveData()
+    suspend fun getImageOfTheDayLiveData() = asteroidRepository.getImageOfTheDayLiveData()
 }
