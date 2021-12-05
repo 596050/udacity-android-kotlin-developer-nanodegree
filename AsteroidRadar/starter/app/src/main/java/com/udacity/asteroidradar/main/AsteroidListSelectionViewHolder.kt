@@ -1,0 +1,24 @@
+package com.udacity.asteroidradar.main
+
+import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.databinding.ItemAsteroidBinding
+
+class AsteroidListSelectionViewHolder(
+    val binding: ItemAsteroidBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    private lateinit var asteroid: Asteroid
+
+    fun bind(asteroid: Asteroid) {
+        this.asteroid = asteroid
+        binding.codename.text = asteroid.codename
+        binding.date.text = asteroid.closeApproachDate
+        binding.icon.setImageResource(
+            when (asteroid.isPotentiallyHazardous) {
+                true -> R.drawable.ic_status_potentially_hazardous
+                false -> R.drawable.ic_status_normal
+            }
+        )
+    }
+}
