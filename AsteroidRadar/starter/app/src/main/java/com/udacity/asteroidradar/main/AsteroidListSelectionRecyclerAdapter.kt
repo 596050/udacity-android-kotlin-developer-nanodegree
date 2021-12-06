@@ -22,8 +22,7 @@ class AsteroidListSelectionRecyclerAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
     ): AsteroidListSelectionViewHolder {
-        val binding =
-            ItemAsteroidBinding.inflate(
+        val binding = ItemAsteroidBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         return AsteroidListSelectionViewHolder(binding)

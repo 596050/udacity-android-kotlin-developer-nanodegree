@@ -1,8 +1,8 @@
 package com.udacity.asteroidradar.model
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AsteroidImageOfTheDayResponseModel(
     val media_type: String,
     val title: String,

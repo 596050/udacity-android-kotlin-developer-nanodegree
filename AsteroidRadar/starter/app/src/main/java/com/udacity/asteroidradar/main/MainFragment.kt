@@ -51,12 +51,12 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val asteroidService = NasaService.instance
-//        val repo = AsteroidRepository(asteroidService)
-//
-//        GlobalScope.launch {
-//            val results = repo.getAsteroidsFeedList()
-//            Log.i(javaClass.simpleName, "Results = ${results.body()}")
-//        }
+        val asteroidService = NasaService.instance
+        val repo = AsteroidRepository(asteroidService)
+
+        GlobalScope.launch {
+            val results = repo.getAsteroidsFeedList()
+            Log.i(javaClass.simpleName, "Results = ${results.body()}")
+        }
     }
 }
