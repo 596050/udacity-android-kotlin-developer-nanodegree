@@ -1,41 +1,39 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import kotlinx.android.synthetic.main.fragment_main.*
+import com.udacity.asteroidradar.repository.AsteroidRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment() {
-
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Binding is null"
         }
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
-
-    //    private val viewModel: MainViewModel by viewModels()
-    private var adapter: AsteroidAdapter? = null
+    private val viewModel: MainViewModel by viewModels()
+    private val asteroids: MutableList<Asteroid> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding.asteroidRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.asteroidRecycler.adapter = AsteroidListSelectionRecyclerAdapter(asteroids)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         setHasOptionsMenu(true)
-        asteroid_recycler.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
 
@@ -51,23 +49,24 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        adapter = null
     }
-    // companion object {
-    //     fun newInstance(): MainFragment {
-    //         return MainFragment()
-    //     }
-    // }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.getAsteroidsListLiveData().observe(viewLifecycleOwner) {
-                updateUI(it)
+        val repo = AsteroidRepository()
+
+        GlobalScope.launch {
+            val newAsteroids = repo.getAsteroidsFeedList()
+            Log.i("NEWASTEROIDS", newAsteroids?.size.toString())
+            if (newAsteroids != null) {
+                asteroids.addAll(
+                    newAsteroids.toList()
+                )
+            }
+            withContext(Dispatchers.Main) {
+                binding.asteroidRecycler.adapter?.notifyDataSetChanged()
             }
         }
     }
-    private fun updateUI(asteroids: List<Asteroid>) {
-        adapter = AsteroidAdapter(asteroids)
-        asteroid_recycler.adapter = adapter
-    }
+
 }
