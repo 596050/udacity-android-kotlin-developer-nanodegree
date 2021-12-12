@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.main
 
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
@@ -20,5 +21,9 @@ class AsteroidListSelectionViewHolder(
                 false -> R.drawable.ic_status_normal
             }
         )
+
+        binding.root.setOnClickListener {
+            itemView.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+        }
     }
 }
