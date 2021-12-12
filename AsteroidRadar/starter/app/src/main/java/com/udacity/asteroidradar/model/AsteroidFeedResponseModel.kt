@@ -7,10 +7,12 @@ data class AsteroidFeedResponse(
     @kotlinx.serialization.Serializable
     data class AsteroidFeedResponseModelItem(
         val id: String,
+        val name: String,
         val absolute_magnitude_h: Double,
         val estimated_diameter: EstimatedDiameter,
         val is_potentially_hazardous_asteroid: Boolean,
-        val close_approach_data: List<CloseApproachData>
+        val close_approach_data: List<CloseApproachData>,
+        val nasa_jpl_url: String
     )
 
     @kotlinx.serialization.Serializable

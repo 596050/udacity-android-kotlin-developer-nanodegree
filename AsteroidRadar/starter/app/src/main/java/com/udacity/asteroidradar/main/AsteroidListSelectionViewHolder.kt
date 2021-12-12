@@ -6,7 +6,7 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.ItemAsteroidBinding
 
 class AsteroidListSelectionViewHolder(
-    val binding: ItemAsteroidBinding
+    private val binding: ItemAsteroidBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     private lateinit var asteroid: Asteroid
 
