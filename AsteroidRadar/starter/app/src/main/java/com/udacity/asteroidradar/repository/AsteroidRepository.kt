@@ -8,10 +8,14 @@ import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.NasaService
 import com.udacity.asteroidradar.database.NasaDao
 import com.udacity.asteroidradar.database.NasaDatabase
+import com.udacity.asteroidradar.model.AsteroidFeedResponse
 import kotlinx.serialization.json.Json
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 
 class AsteroidRepository(context: Context) {
@@ -32,12 +36,14 @@ class AsteroidRepository(context: Context) {
     private val db = NasaDatabase.getInstance(context)
     private val nasaDao: NasaDao = db.nasaDao()
 
-
     suspend fun getAsteroidsFeedList(): LiveData<List<Asteroid>>? {
+
+        // TODO: Fix Socket timeout error
         val results = retrofit.asteroidsFeedRequest()
+
         if (results.isSuccessful) results.body()?.let {
             nasaDao.deleteAllAsteroids()
-            it.near_earth_objects.values.toList().get(0).map { item ->
+            it.near_earth_objects.values.toList()[0].map { item ->
                 val asteroid = Asteroid(
                     item.id.toLong(),
                     codename = item.name,
@@ -51,21 +57,10 @@ class AsteroidRepository(context: Context) {
                 nasaDao.createAsteroid(asteroid)
             }
         }
+        results.raw().body?.close()
+
         return nasaDao.getAsteroids()
     }
-
-//    fun addBookmark(bookmark: Bookmark): Long? {
-//        val newId = bookmarkDao.insertBookmark(bookmark)
-//        bookmark.id = newId
-//        return newId
-//    }
-//    fun createBookmark(): Bookmark {
-//        return Bookmark()
-//    }
-//    val allBookmarks: LiveData<List<Bookmark>>
-//        get() {
-//            return bookmarkDao.loadAll()
-//        }
 }
 
 //    suspend fun getAsteroidImageOfTheDayLiveData(): LiveData<AsteroidImageOfTheDayResponseModel>? {
