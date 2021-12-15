@@ -21,7 +21,7 @@ class MainFragment : Fragment() {
         get() = checkNotNull(_binding) {
             "Binding is null"
         }
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel by viewModels<MainViewModel>()
     private val asteroids: MutableList<Asteroid> = mutableListOf()
 
     override fun onCreateView(
@@ -53,20 +53,22 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repo = AsteroidRepository()
-
+        updateAsteroidsList()
+    }
+    fun updateAsteroidsList() {
+        val repo = AsteroidRepository(requireContext())
         GlobalScope.launch {
             val newAsteroids = repo.getAsteroidsFeedList()
-            Log.i("NEWASTEROIDS", newAsteroids?.size.toString())
-            if (newAsteroids != null) {
-                asteroids.addAll(
-                    newAsteroids.toList()
-                )
+            newAsteroids?.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it != null) {
+                        asteroids.addAll(it)
+                    }
+                }
             }
             withContext(Dispatchers.Main) {
                 binding.asteroidRecycler.adapter?.notifyDataSetChanged()
             }
         }
     }
-
 }
