@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar.database
 
-import android.graphics.Picture
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -11,19 +10,19 @@ import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.model.AsteroidImageOfTheDayResponse
 
 @Dao
-interface NasaDao {
+abstract class NasaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createAsteroid(asteroid: Asteroid)
+    abstract suspend fun createAsteroid(asteroid: Asteroid)
 
     @Query("SELECT * FROM Asteroid ORDER BY id DESC")
-    fun getAsteroids(): LiveData<List<Asteroid>>
+    abstract fun getAsteroids(): LiveData<List<Asteroid>>
 
     @Query("DELETE FROM Asteroid")
-    suspend fun deleteAllAsteroids()
+    abstract fun deleteAllAsteroids()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createPictureOfTheDay(todayImageResponseModel: PictureOfDay)
+    abstract suspend fun createPictureOfTheDay(todayImageResponseModel: PictureOfDay)
 
     @Query("SELECT * FROM PictureOfDay")
-    fun getPictureOfTheDay(): LiveData<AsteroidImageOfTheDayResponse>
+    abstract fun getPictureOfTheDay(): LiveData<AsteroidImageOfTheDayResponse>
 }
