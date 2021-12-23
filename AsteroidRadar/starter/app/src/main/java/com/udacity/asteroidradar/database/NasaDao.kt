@@ -24,5 +24,5 @@ abstract class NasaDao {
     abstract suspend fun createPictureOfTheDay(todayImageResponseModel: PictureOfDay)
 
     @Query("SELECT * FROM PictureOfDay")
-    abstract fun getPictureOfTheDay(): LiveData<AsteroidImageOfTheDayResponse>
+    abstract fun getPictureOfTheDay(): LiveData<PictureOfDay>
 }
