@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         }.build()
 
         val request = PeriodicWorkRequestBuilder<AsteroidWorkerManager>(
-            1, TimeUnit.MINUTES)
+            30, TimeUnit.SECONDS)
             .setConstraints(constraints)
             .build()
 

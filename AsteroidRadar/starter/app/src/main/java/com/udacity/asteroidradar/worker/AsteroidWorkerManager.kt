@@ -5,11 +5,11 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.udacity.asteroidradar.api.AsteroidFeedResponseModelItemService
-import com.udacity.asteroidradar.api.PictureOfTheDayService
+//import com.udacity.asteroidradar.api.PictureOfTheDayService
 import com.udacity.asteroidradar.database.NasaDao
 import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
-import com.udacity.asteroidradar.repository.PictureOfTheDayRepository
+//import com.udacity.asteroidradar.repository.PictureOfTheDayRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
