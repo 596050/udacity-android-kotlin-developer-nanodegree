@@ -40,7 +40,7 @@ fun getFormattedDay(currentTime: Date = Calendar.getInstance().time): String {
 }
 
 class PictureOfTheDayService private constructor() {
-    suspend fun getPictureOfTheDay(): AsteroidImageOfTheDayResponse? {
+    suspend fun getPictureOfTheDayResponse(): AsteroidImageOfTheDayResponse? {
         Log.i("getPictureOfTheDay", "FKFKF")
         val interceptor = HttpLoggingInterceptor()
 
@@ -66,11 +66,13 @@ class PictureOfTheDayService private constructor() {
         val service = retrofit.create(NasaService::class.java)
         try {
             val result = service.imageOfTheDayRequest()
-            Log.i("getPictureOfTheDay", result.toString())
+
             return if (result.code() >= 400) {
+                Log.i("getPictureOfTheDay", result.toString())
                 println("server error, ${result.code()}, ${result.errorBody()}")
                 null
             } else {
+                Log.i("getPictureOfTheDay else", result.toString())
                 var res: AsteroidImageOfTheDayResponse? = null
                 withContext(Dispatchers.IO) {
                     val item = AsteroidImageOfTheDayResponse(
@@ -98,7 +100,6 @@ class PictureOfTheDayService private constructor() {
 
 class AsteroidFeedResponseModelItemService private constructor() {
     suspend fun getFeedResponse(): List<AsteroidFeedResponse.AsteroidFeedResponseModelItem>? {
-        Log.i("getFeedResponse", "FKFKF")
         val interceptor = HttpLoggingInterceptor()
 
 
@@ -128,6 +129,7 @@ class AsteroidFeedResponseModelItemService private constructor() {
             endCalendar.add(Calendar.DAY_OF_YEAR, Constants.DEFAULT_END_DATE_DAYS)
             val result =
                 service.asteroidsFeedRequest(getFormattedDay(), getFormattedDay(endCalendar.time))
+
             return if (result.code() >= 400) {
                 println("server error, ${result.code()}, ${result.errorBody()}")
                 null

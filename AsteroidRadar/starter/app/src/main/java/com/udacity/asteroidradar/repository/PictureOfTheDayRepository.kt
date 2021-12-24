@@ -16,8 +16,8 @@ class PictureOfTheDayRepository(
 
    suspend fun save() {
        GlobalScope.launch {
-           val response = service.getPictureOfTheDay()
-           Log.i("response", response.toString())
+           val response = service.getPictureOfTheDayResponse()
+           Log.i("response",response.toString())
            if (response != null) {
                nasaDao.createPictureOfTheDay(
                    PictureOfDay(

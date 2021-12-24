@@ -7,14 +7,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.AsteroidFeedResponseModelItemService
+import com.udacity.asteroidradar.api.PictureOfTheDayService
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.repository.AsteroidRepository
-import kotlinx.coroutines.launch
+import com.udacity.asteroidradar.repository.PictureOfTheDayRepository
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -33,7 +33,8 @@ class MainFragment : Fragment() {
     private fun setupViewModels() {
         val asteroidFeedService = AsteroidFeedResponseModelItemService.instance
         viewModel.asteroidRepository = AsteroidRepository(viewModel.nasaDao, asteroidFeedService)
-        viewModel.saveAsteroids()
+        val podService = PictureOfTheDayService.instance
+        viewModel.pictureOfTheDayRepository = PictureOfTheDayRepository(viewModel.nasaDao, podService)
     }
 
     override fun onCreateView(
@@ -66,48 +67,26 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
-//        viewModel.viewModelScope.launch {
             val newAsteroids = viewModel.getAsteroids()
             newAsteroids?.observe(viewLifecycleOwner) {
                 it.let {
-//                    if (it != null) {
+                    if (it != null) {
                         asteroids.addAll(it)
-                    Log.i("ASTEROIDS", asteroids.toString())
-//                    }
+                    }
                     binding.asteroidRecycler.adapter?.notifyDataSetChanged()
                 }
             }
-//        }
+
+            val pod = viewModel.getPOD()
+            pod?.observe(viewLifecycleOwner) {
+                it.let {
+                    if (it != null) {
+                        Log.i("pod", pod.toString())
+                    }
+
+                }
+            }
+
         }
-
-
     }
-
-//    private suspend fun updateAsteroidsList() {
-////        val asteroidFeedService = AsteroidFeedResponseModelItemService.instance
-////        withContext(Dispatchers.Default) {
-////            val dao = NasaDatabase
-////                .getDatabase(requireContext())
-////                .nasaDao()
-////            val repo = AsteroidRepository(dao, asteroidFeedService)
-////            val s = repo.updateAsteroids()
-////            if (s != null) {
-////                asteroids.addAll(s)
-////            }
-//////        repo.getAsteroidsFeedList().observe(viewLifecycleOwner) {
-//////            Log.i("ASTEROIDS", it.toString())
-//////        }
-////        }
-////        viewModel.viewModelScope.launch {
-////            val newAsteroids = repo.getAsteroidsFeedList()
-////            newAsteroids?.observe(viewLifecycleOwner) {
-////                it?.let {
-////                    if (it != null) {
-////                        asteroids.addAll(it)
-////                    }
-////                }
-////            }
-////        }
-//        binding.asteroidRecycler.adapter?.notifyDataSetChanged()
-//    }
 }
