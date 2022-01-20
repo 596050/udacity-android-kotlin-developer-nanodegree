@@ -1,13 +1,14 @@
 package com.udacity.asteroidradar
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
+import kotlinx.android.parcel.Parcelize
 
-@Serializable
+@Parcelize
 @Entity
 data class PictureOfDay(
     val media_type: String,
     val title: String,
     @PrimaryKey val url: String
-    )
+    ): Parcelable

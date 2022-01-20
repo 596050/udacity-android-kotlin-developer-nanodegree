@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Picasso
-import okhttp3.internal.platform.Platform.Companion.get
+//import okhttp3.internal.platform.Platform.Companion.get
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
