@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.NetworkResult
 import com.udacity.asteroidradar.models.AsteroidFeed
+import com.udacity.asteroidradar.models.AsteroidImageOfTheDayResponse
 import com.udacity.asteroidradar.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,11 +25,49 @@ class MainViewModel @Inject constructor(
 
     /** RETROFIT */
     var asteroidsResponse: MutableLiveData<NetworkResult<AsteroidFeed>> = MutableLiveData()
-//    var searchedRecipesResponse: MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
-//    var foodJokeResponse: MutableLiveData<NetworkResult<FoodJoke>> = MutableLiveData()
+    var imageOfTheDayResponse: MutableLiveData<NetworkResult<AsteroidImageOfTheDayResponse>> = MutableLiveData()
 
     fun getAsteroids() = viewModelScope.launch {
         getAsteroidsCall()
+    }
+
+    fun getImageOfTheDay() = viewModelScope.launch {
+        getImageOfTheDayCall()
+    }
+
+    private suspend fun getImageOfTheDayCall() {
+        imageOfTheDayResponse.value = NetworkResult.Loading()
+        if (hasInternetConnection()) {
+            try {
+                val response = repository.remote.getImageOfTheDay()
+                imageOfTheDayResponse.value = handleImageOfTheDayResponse(response)
+            } catch (e: Exception) {
+                imageOfTheDayResponse.value = NetworkResult.Error("Asteroids not found.")
+            }
+        } else {
+            imageOfTheDayResponse.value = NetworkResult.Error("No Internet Connection.")
+        }
+    }
+
+    private fun handleImageOfTheDayResponse(response: Response<AsteroidImageOfTheDayResponse>): NetworkResult<AsteroidImageOfTheDayResponse>? {
+        when {
+            response.message().toString().contains("timeout") -> {
+                return NetworkResult.Error("Timeout")
+            }
+            response.code() == 402 -> {
+                return NetworkResult.Error("API Key Limited.")
+            }
+            response.body()!!.url.isNullOrEmpty() -> {
+                return NetworkResult.Error("Asteroids not found.")
+            }
+            response.isSuccessful -> {
+                val responseBody = response.body()
+                return NetworkResult.Success(responseBody!!)
+            }
+            else -> {
+                return NetworkResult.Error(response.message())
+            }
+        }
     }
 
     private suspend fun getAsteroidsCall() {
@@ -70,47 +109,6 @@ class MainViewModel @Inject constructor(
         }
     }
 //
-//    fun searchRecipes(searchQuery: Map<String, String>) = viewModelScope.launch {
-//        searchRecipesSafeCall(searchQuery)
-//    }
-//
-//    fun getFoodJoke(apiKey: String) = viewModelScope.launch {
-//        getFoodJokeSafeCall(apiKey)
-//    }
-//
-//    private suspend fun searchRecipesSafeCall(searchQuery: Map<String, String>) {
-//        searchedRecipesResponse.value = NetworkResult.Loading()
-//        if (hasInternetConnection()) {
-//            try {
-//                val response = repository.remote.searchRecipes(searchQuery)
-//                searchedRecipesResponse.value = handleFoodRecipesResponse(response)
-//            } catch (e: Exception) {
-//                searchedRecipesResponse.value = NetworkResult.Error("Recipes not found.")
-//            }
-//        } else {
-//            searchedRecipesResponse.value = NetworkResult.Error("No Internet Connection.")
-//        }
-//    }
-//
-//    private suspend fun getFoodJokeSafeCall(apiKey: String) {
-//        foodJokeResponse.value = NetworkResult.Loading()
-//        if (hasInternetConnection()) {
-//            try {
-//                val response = repository.remote.getFoodJoke(apiKey)
-//                foodJokeResponse.value = handleFoodJokeResponse(response)
-//
-//                val foodJoke = foodJokeResponse.value!!.data
-//                if(foodJoke != null){
-//                    offlineCacheFoodJoke(foodJoke)
-//                }
-//            } catch (e: Exception) {
-//                foodJokeResponse.value = NetworkResult.Error("Recipes not found.")
-//            }
-//        } else {
-//            foodJokeResponse.value = NetworkResult.Error("No Internet Connection.")
-//        }
-//    }
-//
 //    private fun offlineCacheRecipes(foodRecipe: FoodRecipe) {
 //        val recipesEntity = RecipesEntity(foodRecipe)
 //        insertRecipes(recipesEntity)
@@ -121,24 +119,6 @@ class MainViewModel @Inject constructor(
 //        insertFoodJoke(foodJokeEntity)
 //    }
 //
-//
-//    private fun handleFoodJokeResponse(response: Response<FoodJoke>): NetworkResult<FoodJoke> {
-//        return when {
-//            response.message().toString().contains("timeout") -> {
-//                NetworkResult.Error("Timeout")
-//            }
-//            response.code() == 402 -> {
-//                NetworkResult.Error("API Key Limited.")
-//            }
-//            response.isSuccessful -> {
-//                val foodJoke = response.body()
-//                NetworkResult.Success(foodJoke!!)
-//            }
-//            else -> {
-//                NetworkResult.Error(response.message())
-//            }
-//        }
-//    }
 //
 
     private fun hasInternetConnection(): Boolean {

@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.udacity.asteroidradar.viewmodels.MainViewModel" />
+<!--    <data>-->
+<!--        <variable-->
+<!--            name="image"-->
+<!--            type="com.udacity.asteroidradar.models.AsteroidImageOfTheDayResponse" />-->
 
-    </data>
+<!--    </data>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,6 +34,7 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/placeholder_picture_of_day"
                 />
+<!--                loadImageFromUrl="@{image.url}"-->
 <!--                android:contentDescription="@{viewModel.pictureOfTheDay.title}"-->
 <!--                app:pictureOfTheDay="@{viewModel.pictureOfTheDay.url}"-->
 

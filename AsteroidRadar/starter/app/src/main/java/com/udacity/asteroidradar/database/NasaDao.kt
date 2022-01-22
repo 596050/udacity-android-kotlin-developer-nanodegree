@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
-import com.udacity.asteroidradar.model.AsteroidImageOfTheDayResponse
 
 @Dao
 abstract class NasaDao {

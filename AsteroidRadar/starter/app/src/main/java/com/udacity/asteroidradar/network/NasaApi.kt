@@ -1,8 +1,8 @@
 package com.udacity.asteroidradar.network
 
 import com.udacity.asteroidradar.Constants.Companion.API_KEY
-import com.udacity.asteroidradar.model.AsteroidImageOfTheDayResponse
 import com.udacity.asteroidradar.models.AsteroidFeed
+import com.udacity.asteroidradar.models.AsteroidImageOfTheDayResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

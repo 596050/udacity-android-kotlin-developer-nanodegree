@@ -1,11 +1,13 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.udacity.asteroidradar.NetworkResult
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.adapters.AsteroidsAdapter
@@ -22,41 +24,58 @@ class MainFragment : Fragment() {
             "Binding is null"
         }
 
-    //    private val viewModel by viewModels<MainViewModel>()
     private val mAdapter by lazy {
         AsteroidsAdapter()
     }
-//    private lateinit var mView: View
-//    private val asteroids: MutableList<Asteroid> = mutableListOf()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupViewModels()
-    }
-
-    private fun setupViewModels() {
-//        val asteroidFeedService = AsteroidFeedResponseModelItemService.instance
-//        viewModel.asteroidRepository = AsteroidRepository(viewModel.nasaDao, asteroidFeedService)
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-//        mView = inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         setHasOptionsMenu(true)
         setupRecyclerView()
-        requestAPIData()
+        requestAsteroidsAPIData()
+        requestImageOfTheDayAPIData()
         return binding.root
-
-//        return mView
     }
 
-    private fun requestAPIData() {
+    private fun requestImageOfTheDayAPIData() {
+        mainViewModel.getImageOfTheDay()
+        mainViewModel.imageOfTheDayResponse.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    response.data?.let {
+                        Log.i("IMAGE IMAGE", it.toString())
+                        if (it.media_type == "image") {
+                            binding.activityMainImageOfTheDay.load(it?.url) {
+                                crossfade(true)
+                            }
+                            binding.activityMainImageOfTheDay.contentDescription = it?.title
+                        }
+                    }
+                }
+                is NetworkResult.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error getting asteroids",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is NetworkResult.Loading -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Loading Asteroids",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun requestAsteroidsAPIData() {
         mainViewModel.getAsteroids()
         mainViewModel.asteroidsResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -123,5 +142,4 @@ class MainFragment : Fragment() {
 ////            }
 //        }
 //    }
-
 }

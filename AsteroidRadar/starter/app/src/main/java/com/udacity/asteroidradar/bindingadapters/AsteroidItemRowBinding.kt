@@ -7,15 +7,6 @@ import com.udacity.asteroidradar.R
 
 class AsteroidItemRowBinding {
     companion object {
-
-        @BindingAdapter("loadImageFromUrl")
-        @JvmStatic
-        fun loadImageFromUrl(imageView: ImageView, imageUrl: String) {
-            imageView.load(imageUrl) {
-                crossfade(600)
-            }
-        }
-
         @BindingAdapter("setIsPotentiallyHazardousIcon")
         @JvmStatic
         fun setIsPotentiallyHazardousIcon(imageView: ImageView, isPotentiallyHazardous: Boolean) {
