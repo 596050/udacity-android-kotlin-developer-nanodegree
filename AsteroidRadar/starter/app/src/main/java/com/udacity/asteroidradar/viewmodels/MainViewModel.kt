@@ -4,24 +4,32 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.NetworkResult
 import com.udacity.asteroidradar.models.AsteroidFeed
+import com.udacity.asteroidradar.models.AsteroidFeedResponseModelItem
 import com.udacity.asteroidradar.models.AsteroidImageOfTheDayResponse
 import com.udacity.asteroidradar.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
-
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: Repository,
     application: Application
 ) : AndroidViewModel(application) {
+
+
+/** ROOM DATABASE */
+    val readAsteroids: LiveData<List<Any>> = repository.local.readDatabase().asLiveData()
+    private fun insertAsteroid(asteroid: Asteroid) = viewModelScope.launch(Dispatchers.IO) {
+        repository.local.insertAsteroids(asteroid)
+    }
 
     /** RETROFIT */
     var asteroidsResponse: MutableLiveData<NetworkResult<AsteroidFeed>> = MutableLiveData()
@@ -76,10 +84,10 @@ class MainViewModel @Inject constructor(
             try {
                 val response = repository.remote.getAsteroids()
                 asteroidsResponse.value = handleAsteroidsResponse(response)
-//                val asteroids = asteroidsResponse.value!!.data
-//                if (foodRecipe != null) {
-//                    offlineCacheRecipes(foodRecipe)
-//                }
+                val asteroids = asteroidsResponse.value!!.data
+                if (asteroids != null) {
+                    offlineCacheRecipes(asteroids)
+                }
             } catch (e: Exception) {
                 asteroidsResponse.value = NetworkResult.Error("Asteroids not found.")
             }
@@ -108,18 +116,24 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-//
-//    private fun offlineCacheRecipes(foodRecipe: FoodRecipe) {
-//        val recipesEntity = RecipesEntity(foodRecipe)
-//        insertRecipes(recipesEntity)
-//    }
-//
-//    private fun offlineCacheFoodJoke(foodJoke: FoodJoke) {
-//        val foodJokeEntity = FoodJokeEntity(foodJoke)
-//        insertFoodJoke(foodJokeEntity)
-//    }
-//
-//
+
+    private fun offlineCacheRecipes(asteroids: AsteroidFeed) {
+        val asteroidList = asteroids.near_earth_objects?.toList()[0]
+        asteroidList.second.forEach {
+            val entity = Asteroid(
+                id=it.id.toLong(),
+                codename=it.name,
+                        closeApproachDate=it.close_approach_data[0].close_approach_date,
+                        absoluteMagnitude=it.absolute_magnitude_h,
+                        estimatedDiameter=it.estimated_diameter.kilometers.estimated_diameter_max,
+                        relativeVelocity=it.close_approach_data[0].relative_velocity.kilometers_per_second.toDouble(),
+                        distanceFromEarth=it.close_approach_data[0].miss_distance.astronomical.toDouble(),
+                        isPotentiallyHazardous=it.is_potentially_hazardous_asteroid,
+                )
+            Log.i("entity", entity.toString())
+            insertAsteroid(entity)
+        }
+    }
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<Application>().getSystemService(

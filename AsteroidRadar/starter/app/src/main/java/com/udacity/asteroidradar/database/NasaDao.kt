@@ -7,21 +7,24 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.models.AsteroidFeed
+import com.udacity.asteroidradar.models.AsteroidFeedResponseModelItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class NasaDao {
+interface NasaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun createAsteroid(asteroid: Asteroid)
+    suspend fun insertAsteroids(asteroid: Asteroid)
 
     @Query("SELECT * FROM Asteroid ORDER BY id DESC")
-    abstract fun getAsteroids(): LiveData<List<Asteroid>>
+    fun readAsteroids(): Flow<List<Asteroid>>
 
     @Query("DELETE FROM Asteroid")
-    abstract fun deleteAllAsteroids()
+    fun deleteAllAsteroids()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun createPictureOfTheDay(todayImageResponseModel: PictureOfDay)
-
-    @Query("SELECT * FROM PictureOfDay")
-    abstract fun getPictureOfTheDay(): LiveData<PictureOfDay>
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun createPictureOfTheDay(todayImageResponseModel: PictureOfDay)
+//
+//    @Query("SELECT * FROM PictureOfDay")
+//    fun getPictureOfTheDay(): LiveData<PictureOfDay>
 }
