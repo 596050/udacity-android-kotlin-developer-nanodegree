@@ -6,14 +6,18 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.udacity.asteroidradar.NetworkResult
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.adapters.AsteroidsAdapter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.models.*
+import com.udacity.asteroidradar.observeOnce
 import com.udacity.asteroidradar.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -37,9 +41,93 @@ class MainFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         setHasOptionsMenu(true)
         setupRecyclerView()
-        requestAsteroidsAPIData()
+        readDatabase()
         requestImageOfTheDayAPIData()
         return binding.root
+    }
+
+    private fun loadDataFromCache() {
+        lifecycleScope.launch {
+            mainViewModel.readAsteroids.observe(viewLifecycleOwner) { database ->
+                if (database.isNotEmpty()) {
+                    val l = mutableListOf<AsteroidFeedResponseModelItem>()
+                    database.forEach { asteroid ->
+                        val item = AsteroidFeedResponseModelItem(
+                            id = asteroid.id.toString(),
+                            name = asteroid.codename,
+                            close_approach_data = listOf(
+                                CloseApproachData(
+                                    relative_velocity = RelativeVelocity(
+                                        kilometers_per_second = asteroid.relativeVelocity.toString()
+                                    ),
+                                    miss_distance = MissDistance(
+                                        astronomical = asteroid.distanceFromEarth.toString()
+                                    ),
+                                    close_approach_date = asteroid.closeApproachDate
+                                )
+                            ),
+                            absolute_magnitude_h = asteroid.absoluteMagnitude,
+                            estimated_diameter = EstimatedDiameter(
+                                kilometers = Kilometers(
+                                    estimated_diameter_max = asteroid.estimatedDiameter
+                                )
+                            ),
+                            is_potentially_hazardous_asteroid = asteroid.isPotentiallyHazardous,
+                            nasa_jpl_url = ""
+                        )
+                        l.add(item)
+                    }
+                    mAdapter.setData(
+                        AsteroidFeed(
+                            near_earth_objects = mapOf("1" to l)
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun readDatabase() {
+        lifecycleScope.launch {
+            mainViewModel.readAsteroids.observeOnce(viewLifecycleOwner) { database ->
+                if (database.isNotEmpty()) {
+                    val l = mutableListOf<AsteroidFeedResponseModelItem>()
+                    database.forEach { asteroid ->
+                        val item = AsteroidFeedResponseModelItem(
+                            id = asteroid.id.toString(),
+                            name = asteroid.codename,
+                            close_approach_data = listOf(
+                                CloseApproachData(
+                                    relative_velocity = RelativeVelocity(
+                                        kilometers_per_second = asteroid.relativeVelocity.toString()
+                                    ),
+                                    miss_distance = MissDistance(
+                                        astronomical = asteroid.distanceFromEarth.toString()
+                                    ),
+                                    close_approach_date = asteroid.closeApproachDate
+                                )
+                            ),
+                            absolute_magnitude_h = asteroid.absoluteMagnitude,
+                            estimated_diameter = EstimatedDiameter(
+                                kilometers = Kilometers(
+                                    estimated_diameter_max = asteroid.estimatedDiameter
+                                )
+                            ),
+                            is_potentially_hazardous_asteroid = asteroid.isPotentiallyHazardous,
+                            nasa_jpl_url = ""
+                        )
+                        l.add(item)
+                    }
+                    mAdapter.setData(
+                        AsteroidFeed(
+                            near_earth_objects = mapOf("1" to l)
+                        )
+                    )
+                } else {
+                    requestAsteroidsAPIData()
+                }
+            }
+        }
     }
 
     private fun requestImageOfTheDayAPIData() {
@@ -50,10 +138,10 @@ class MainFragment : Fragment() {
                     response.data?.let {
                         Log.i("IMAGE IMAGE", it.toString())
                         if (it.media_type == "image") {
-                            binding.activityMainImageOfTheDay.load(it?.url) {
+                            binding.activityMainImageOfTheDay.load(it.url) {
                                 crossfade(true)
                             }
-                            binding.activityMainImageOfTheDay.contentDescription = it?.title
+                            binding.activityMainImageOfTheDay.contentDescription = it.title
                         }
                     }
                 }
@@ -85,6 +173,7 @@ class MainFragment : Fragment() {
                     }
                 }
                 is NetworkResult.Error -> {
+                    loadDataFromCache()
                     Toast.makeText(
                         requireContext(),
                         "Error getting asteroids",
@@ -115,31 +204,4 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return true
     }
-
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-////        viewModel.viewModelScope.launch {
-////            val newAsteroids = viewModel.getAsteroids()
-////            asteroids.addAll(newAsteroids)
-////            Log.i("ASTEROIDS", asteroids.toString())
-////            binding.asteroidRecycler.adapter?.notifyDataSetChanged()
-////            newAsteroids?.observe(viewLifecycleOwner) {
-////                it.let {
-////                    if (it != null && it.isNotEmpty()) {
-////                        asteroids.addAll(it)
-////                        Log.i("ASTEROIDS", asteroids.toString())
-////                    } else {
-////                        viewModel.saveAsteroids()
-////
-////                    }
-////                    binding.asteroidRecycler.adapter?.notifyDataSetChanged()
-////                }
-////            }
-//        }
-//    }
 }

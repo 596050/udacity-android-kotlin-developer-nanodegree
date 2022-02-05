@@ -21,10 +21,4 @@ interface NasaDao {
 
     @Query("DELETE FROM Asteroid")
     fun deleteAllAsteroids()
-
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun createPictureOfTheDay(todayImageResponseModel: PictureOfDay)
-//
-//    @Query("SELECT * FROM PictureOfDay")
-//    fun getPictureOfTheDay(): LiveData<PictureOfDay>
 }

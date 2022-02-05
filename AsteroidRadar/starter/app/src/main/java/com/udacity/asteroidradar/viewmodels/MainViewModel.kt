@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
 
 
 /** ROOM DATABASE */
-    val readAsteroids: LiveData<List<Any>> = repository.local.readDatabase().asLiveData()
+    val readAsteroids: LiveData<List<Asteroid>> = repository.local.readDatabase().asLiveData()
     private fun insertAsteroid(asteroid: Asteroid) = viewModelScope.launch(Dispatchers.IO) {
         repository.local.insertAsteroids(asteroid)
     }
@@ -120,18 +120,28 @@ class MainViewModel @Inject constructor(
     private fun offlineCacheRecipes(asteroids: AsteroidFeed) {
         val asteroidList = asteroids.near_earth_objects?.toList()[0]
         asteroidList.second.forEach {
-            val entity = Asteroid(
-                id=it.id.toLong(),
-                codename=it.name,
-                        closeApproachDate=it.close_approach_data[0].close_approach_date,
-                        absoluteMagnitude=it.absolute_magnitude_h,
-                        estimatedDiameter=it.estimated_diameter.kilometers.estimated_diameter_max,
-                        relativeVelocity=it.close_approach_data[0].relative_velocity.kilometers_per_second.toDouble(),
-                        distanceFromEarth=it.close_approach_data[0].miss_distance.astronomical.toDouble(),
-                        isPotentiallyHazardous=it.is_potentially_hazardous_asteroid,
-                )
+            val entity = it.close_approach_data?.get(0)?.let { it1 ->
+                it.absolute_magnitude_h?.let { it2 ->
+                    it.is_potentially_hazardous_asteroid?.let { it3 ->
+                        it.estimated_diameter?.kilometers?.let { it4 ->
+                            Asteroid(
+                                id=it.id.toLong(),
+                                codename=it.name,
+                                closeApproachDate= it1.close_approach_date,
+                                absoluteMagnitude= it2,
+                                estimatedDiameter= it4.estimated_diameter_max,
+                                relativeVelocity=it.close_approach_data[0].relative_velocity.kilometers_per_second.toDouble(),
+                                distanceFromEarth=it.close_approach_data[0].miss_distance.astronomical.toDouble(),
+                                isPotentiallyHazardous= it3,
+                            )
+                        }
+                    }
+                }
+            }
             Log.i("entity", entity.toString())
-            insertAsteroid(entity)
+            if (entity != null) {
+                insertAsteroid(entity)
+            }
         }
     }
 
@@ -148,38 +158,4 @@ class MainViewModel @Inject constructor(
             else -> false
         }
     }
-//
-//    var recyclerViewState: Parcelable? = null
-//
-//    /** ROOM DATABASE */
-//
-//    val readRecipes: LiveData<List<RecipesEntity>> = repository.local.readRecipes().asLiveData()
-//    val readFavoriteRecipes: LiveData<List<FavoritesEntity>> = repository.local.readFavoriteRecipes().asLiveData()
-//    val readFoodJoke: LiveData<List<FoodJokeEntity>> = repository.local.readFoodJoke().asLiveData()
-//
-//    private fun insertRecipes(recipesEntity: RecipesEntity) =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repository.local.insertRecipes(recipesEntity)
-//        }
-//
-//    fun insertFavoriteRecipe(favoritesEntity: FavoritesEntity) =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repository.local.insertFavoriteRecipes(favoritesEntity)
-//        }
-//
-//    private fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repository.local.insertFoodJoke(foodJokeEntity)
-//        }
-//
-//    fun deleteFavoriteRecipe(favoritesEntity: FavoritesEntity) =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repository.local.deleteFavoriteRecipe(favoritesEntity)
-//        }
-//
-//    fun deleteAllFavoriteRecipes() =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repository.local.deleteAllFavoriteRecipes()
-//        }
-//
 }

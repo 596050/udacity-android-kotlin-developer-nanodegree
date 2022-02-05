@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LocalDataSource @Inject constructor(
     private val asteroidsDao: NasaDao
 ) {
-     fun readDatabase(): Flow<List<Any>> {
+     fun readDatabase(): Flow<List<Asteroid>> {
          return asteroidsDao.readAsteroids()
      }
 

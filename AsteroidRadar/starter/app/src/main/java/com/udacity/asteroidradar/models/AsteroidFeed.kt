@@ -17,15 +17,15 @@ data class AsteroidFeedResponseModelItem(
     @SerializedName("name")
     val name: String,
     @SerializedName("absolute_magnitude_h")
-    val absolute_magnitude_h: Double,
+    val absolute_magnitude_h: Double?,
     @SerializedName("estimated_diameter")
-    val estimated_diameter: EstimatedDiameter,
+    val estimated_diameter: EstimatedDiameter?,
     @SerializedName("is_potentially_hazardous_asteroid")
-    val is_potentially_hazardous_asteroid: Boolean,
+    val is_potentially_hazardous_asteroid: Boolean?,
     @SerializedName("close_approach_data")
-    val close_approach_data: List<CloseApproachData>,
+    val close_approach_data: List<CloseApproachData>?,
     @SerializedName("nasa_jpl_url")
-    val nasa_jpl_url: String
+    val nasa_jpl_url: String?
 ): Parcelable
 
 @Parcelize
