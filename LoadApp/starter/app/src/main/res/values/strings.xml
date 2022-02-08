@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ND940C3-Project</string>
+    <string name="app_description">Download files from Internet</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="channel_id">downloadNotification</string>
+    <string name="channel_name">DownloadNotification</string>
+
+    <string name="notification_title">Udacity: Android Kotlin Nanodegree </string>
+    <string name="notification_description">The Project 3 repository is downloaded</string>
+    <string name="notification_button">See changes</string>
+
+    <string name="button_name">Click me</string>
+    <string name="button_loading">We are loading </string>
+    <string name="title_activity_detail">DetailActivity</string>
+
+    <string name="udactity_url">Udacity starter code</string>
+    <string name="retrofit_url">Retrofit library</string>
+    <string name="glide_url">Glide library</string>
+</resources>
