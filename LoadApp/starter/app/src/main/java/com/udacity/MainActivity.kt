@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         custom_button.setOnClickListener {
             val checkedId =
                 this.findViewById<RadioGroup>(R.id.download_radio_group).checkedRadioButtonId
+            progress_circle.animateProgress()
             if (checkedId == -1) {
                 Toast.makeText(
                     applicationContext, "Nothing selected",
